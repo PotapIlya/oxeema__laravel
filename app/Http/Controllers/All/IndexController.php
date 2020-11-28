@@ -1,30 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\All;
 
 use App\Http\Controllers\Controller;
 use App\Models\User\Articles;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Auth;
 
-class MyController extends UserBasicController
+class IndexController extends AllBasicController
 {
 	public function __construct()
 	{
 		parent::__construct();
 	}
 
-
 	/**
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 	 */
     public function index()
     {
-    	$articles = Articles::where('user_id', Auth::id())->limit(5)->get();
+		$articles = Articles::all();
 
-    	return view('user.my.index', compact('articles'));
+        return view('all.main.index', compact('articles'));
     }
+
+    public function articleShow(int $id)
+	{
+		$item = Articles::with('user')->find($id);
+		if (!$item){
+			return abort(500);
+		}
+
+
+		return view('all.article.index', compact('item'));
+	}
+
+	public function userShow(string $name)
+	{
+		$user = User::where('name', $name)
+			->with('articles', function ($query)
+		{
+			$query->limit(5);
+		})->first();
+
+		return view('all.user.index', compact('user'));
+	}
 
     /**
      * Show the form for creating a new resource.
@@ -58,20 +78,15 @@ class MyController extends UserBasicController
         //
     }
 
-	/**
-	 * @param string $name
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
-	 */
-    public function edit(string $name)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-
-//    	$user = User::where('name', $name)->first();
-		$user = Auth::user();
-    	if ( !$user ) {
-    		return abort(500);
-		}
-
-        return view('user.my.edit', compact('user'));
+        //
     }
 
     /**
