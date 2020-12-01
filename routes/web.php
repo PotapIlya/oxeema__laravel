@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 
 // All
@@ -28,7 +28,7 @@ Route::group(
 	function ()
 	{
 		Route::resource('/', 'IndexController')->names('all.main');
-		Route::get('/article/{id}', 'IndexController@articleShow')->name('all.articleShow');
+		Route::get('/articles/{id}', 'IndexController@articleShow')->name('all.articleShow');
 		Route::get('/user/{name}', 'IndexController@userShow')->name('all.userShow');
 	}
 );
@@ -41,7 +41,10 @@ Route::group(
 	function ()
 	{
 		Route::resource('/my', 'MyController')->names('user.my');
+
 		Route::resource('/article', 'ArticlesController')->names('user.article');
+		Route::post('/comment/{article_id}', 'ArticlesController@createComment')->name('user.comment.create');
+		Route::post('/like/{article_id}', 'ArticlesController@createLike')->name('user.like.create');
 	}
 );
 

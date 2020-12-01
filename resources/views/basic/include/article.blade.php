@@ -2,7 +2,7 @@
 
 
 
-    <div class="d-flex " style="border-bottom: 1px solid red">
+    <div class="d-flex justify-content-between " style="border-bottom: 1px solid red">
 
         @isset($show)
             <a href="{{ route('all.articleShow', $item->id) }}" class="col-2">
@@ -19,6 +19,7 @@
             </p>
         </div>
 
+
         @isset($show)
         @else
             <div>
@@ -27,6 +28,11 @@
                 </a>
             </div>
         @endisset
+
+
+        <div>
+            like: {{ count($item->likes) }}
+        </div>
 
     </div>
 

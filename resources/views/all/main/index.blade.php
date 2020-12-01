@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('head')
+    <style>
+        .relative.z-0.inline-flex.shadow-sm.rounded-md{
+            display: none;
+        }
+    </style>
+@endsection
+
 @section('content')
     <section>
         <div class="container">
@@ -12,6 +20,9 @@
                                         'articles' => $articles,
                                         'show' => true
                                     ])
+
+
+                    {{ $articles->links() }}
 
 
                 </div>

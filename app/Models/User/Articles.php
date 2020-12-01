@@ -14,9 +14,18 @@ class Articles extends Model
     protected $guarded = ['id'];
 
 
-    public function user()
+    public function author()
 	{
 		return $this->hasOne(User::class, 'id', 'user_id');
+	}
+	public function comments()
+	{
+		return $this->hasMany(Comment::class, 'article_id', 'id');
+	}
+	public function likes()
+	{
+		return $this->hasMany(Like::class, 'article_id', 'id');
+//		return $this->hasMany(Like::class, 'article_id', 'id')->where('status', true);
 	}
 
 }

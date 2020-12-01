@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User\Articles;
+use App\Models\User\Comment;
+use App\Models\User\Like;
 use Illuminate\Http\Request;
 
 class ArticlesController extends UserBasicController
@@ -30,7 +32,7 @@ class ArticlesController extends UserBasicController
 	 */
     public function create()
     {
-		return view('user.article.create');
+    	return view('user.article.create');
     }
 
 	/**
@@ -51,9 +53,30 @@ class ArticlesController extends UserBasicController
     		return abort(500);
 		}
 
-
     }
 
+    public function createComment(Request $request, int $articleId)
+	{
+		$create = Comment::create([
+			'article_id' => $articleId,
+			'user_id' => \Auth::id(),
+			'text' => $request->input('text'),
+		]);
+		if ($create){
+			return redirect()->back();
+		}
+	}
+	public function createLike(Request $request, int $articleId)
+	{
+		$create = Like::create([
+			'article_id' => $articleId,
+			'user_id' => \Auth::id(),
+			'text' => true,
+		]);
+		if ($create){
+			return redirect()->back();
+		}
+	}
 
     /**
      * Display the specified resource.

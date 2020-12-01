@@ -19,20 +19,24 @@ class IndexController extends AllBasicController
 	 */
     public function index()
     {
-		$articles = Articles::all();
+		$articles = Articles::with('likes')->paginate(10);
+
+
+//		dd($articles[1]);
 
         return view('all.main.index', compact('articles'));
     }
 
     public function articleShow(int $id)
 	{
-		$item = Articles::with('user')->find($id);
+		$item = Articles::with('author', 'comments.user', 'likes')->find($id);
 		if (!$item){
 			return abort(500);
 		}
 
 
-		return view('all.article.index', compact('item'));
+
+		return view('all.article.index', compact('item', 'id'));
 	}
 
 	public function userShow(string $name)
